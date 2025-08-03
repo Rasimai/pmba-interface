@@ -268,15 +268,17 @@
         document.getElementById('pmbaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-          // Form verilerini al
-const formData = new FormData(this);
+// Form verilerini al - DÜZELTME
 const data = {
-    country: formData.get('country'),
-    city: formData.get('city'),
-    product: formData.get('product'),
-    businessType: formData.get('businessType'),
-    targetCount: parseInt(formData.get('targetCount'))
+    country: document.getElementById('country').value,
+    city: document.getElementById('city').value,
+    product: document.getElementById('product').value,
+    businessType: document.getElementById('businessType').value,
+    targetCount: parseInt(document.getElementById('targetCount').value)
 };
+
+// Debug için
+console.log('Form data being sent:', data);
 
 // Debug için console'a yazdır
 console.log('Form data:', data);
