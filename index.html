@@ -268,15 +268,18 @@
         document.getElementById('pmbaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Form verilerini al
-            const formData = new FormData(this);
-            const data = {
-                country: formData.get('country'),
-                city: formData.get('city'),
-                product: formData.get('product'),
-                businessType: formData.get('businessType'),
-                targetCount: parseInt(formData.get('targetCount'))
-            };
+          // Form verilerini al
+const formData = new FormData(this);
+const data = {
+    country: formData.get('country'),
+    city: formData.get('city'),
+    product: formData.get('product'),
+    businessType: formData.get('businessType'),
+    targetCount: parseInt(formData.get('targetCount'))
+};
+
+// Debug için console'a yazdır
+console.log('Form data:', data);
             
             // Loading göster
             document.getElementById('loading').style.display = 'block';
