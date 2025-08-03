@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMBA - Potansiyel Müşteri Bulucu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            padding: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 1.1em;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .features {
+            background: #f8fafc;
+            padding: 30px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .features h3 {
+            color: #374151;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .features ul {
+            list-style: none;
+        }
+        
+        .features li {
+            padding: 8px 0;
+            color: #6b7280;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .features li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4f46e5;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .result {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: #f0fdf4;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+        }
+        
+        .result h4 {
+            color: #059669;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 PMBA</h1>
+            <p>Potansiyel Müşteri Bulucu Agent</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="pmbaForm">
+                <div class="form-group">
+                    <label for="country">🌍 Ülke</label>
+                    <select id="country" name="country" required>
+                        <option value="">Ülke Seçin</option>
+                        <option value="Germany">🇩🇪 Almanya</option>
+                        <option value="France">🇫🇷 Fransa</option>
+                        <option value="Italy">🇮🇹 İtalya</option>
+                        <option value="Spain">🇪🇸 İspanya</option>
+                        <option value="Netherlands">🇳🇱 Hollanda</option>
+                        <option value="United Kingdom">🇬🇧 İngiltere</option>
+                        <option value="Turkey">🇹🇷 Türkiye</option>
+                        <option value="United States">🇺🇸 Amerika</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="city">🏙️ Şehir</label>
+                    <input type="text" id="city" name="city" placeholder="Berlin, Paris, Milano... (veya 'all' tüm şehirler için)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="product">🛍️ Ürün/Hizmet</label>
+                    <input type="text" id="product" name="product" placeholder="coffee, restaurant, software, furniture..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="businessType">🏢 İş Tipi</label>
+                    <select id="businessType" name="businessType">
+                        <option value="all">Tümü</option>
+                        <option value="retail">Perakende</option>
+                        <option value="wholesale">Toptan</option>
+                        <option value="ecommerce">E-ticaret</option>
+                        <option value="restaurant">Restoran</option>
+                        <option value="service">Hizmet</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="targetCount">📊 Hedef Firma Sayısı</label>
+                    <select id="targetCount" name="targetCount">
+                        <option value="25">25 Firma</option>
+                        <option value="50" selected>50 Firma</option>
+                        <option value="100">100 Firma</option>
+                        <option value="200">200 Firma</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    🚀 PMBA'yi Başlat
+                </button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>PMBA çalışıyor... Firmalar aranıyor ve analiz ediliyor...</p>
+            </div>
+            
+            <div class="result" id="result">
+                <h4>✅ PMBA Analizi Tamamlandı!</h4>
+                <p id="resultText"></p>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>🎯 PMBA Özellikleri</h3>
+            <ul>
+                <li>Google Places API ile gerçek firma verileri</li>
+                <li>Claude AI ile akıllı analiz ve öneriler</li>
+                <li>Esnek ülke, şehir ve ürün araması</li>
+                <li>JSON formatında detaylı sonuçlar</li>
+                <li>Anlık sonuç ve raporlama</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('pmbaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Form verilerini al
+            const formData = new FormData(this);
+            const data = {
+                country: formData.get('country'),
+                city: formData.get('city'),
+                product: formData.get('product'),
+                businessType: formData.get('businessType'),
+                targetCount: parseInt(formData.get('targetCount'))
+            };
+            
+            // Loading göster
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('result').style.display = 'none';
+            this.style.display = 'none';
+            
+            try {
+                // PMBA API'ye gönder
+                const response = await fetch('https://rasimwork.app.n8n.cloud/webhook/pmba-search', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                // Sonucu göster
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+                
+                if (result.success) {
+                    document.getElementById('resultText').innerHTML = `
+                        <strong>🎯 Arama Tamamlandı!</strong><br>
+                        📍 ${result.search_params.city}, ${result.search_params.country}<br>
+                        🛍️ ${result.search_params.product}<br>
+                        📊 ${result.google_places.results_count} firma bulundu<br>
+                        🤖 Claude analizi hazır!<br><br>
+                        <button onclick="downloadResults()" style="background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">
+                            📥 Sonuçları İndir
+                        </button>
+                    `;
+                    
+                    // Sonuçları sakla
+                    window.pmbaResults = result;
+                } else {
+                    document.getElementById('resultText').innerHTML = '❌ Hata: ' + result.message;
+                }
+                
+            } catch (error) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('resultText').innerHTML = '❌ Bağlantı hatası: ' + error.message;
+            }
+            
+            // Formu tekrar göster
+            setTimeout(() => {
+                this.style.display = 'block';
+            }, 2000);
+        });
+        
+        function downloadResults() {
+            if (window.pmbaResults) {
+                const dataStr = JSON.stringify(window.pmbaResults, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `pmba_${window.pmbaResults.search_params.country}_${window.pmbaResults.search_params.product}_${new Date().toISOString().slice(0,10)}.json`;
+                link.click();
+            }
+        }
+    </script>
+</body>
+</html>
